@@ -9,8 +9,6 @@
 #include "core_cm4.h"
 #include "adc.h"
 
-//#define TIMERA
-
 void configure_ADC(void){
     /*enable ports*/
 
@@ -56,7 +54,7 @@ void configure_ADC(void){
     NVIC_EnableIRQ(ADC14_IRQn);
 }
 
-
+//interrupt handler for the Analog to Digital converter
 void ADC14_IRQHandler(void){
     __disable_irq();
     if(ADC14->IFGR0 & ADC14_IFGR0_IFG1){

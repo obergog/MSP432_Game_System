@@ -86,7 +86,6 @@ void Delay(uint32_t count)
 }
 
 void TA0_0_IRQHandler(void){
-    __disable_irq();
     if(TIMER_A0->CCTL[0] & BIT0){
         timer_trigger = 1;
         if(timer_delay > 0){
@@ -102,5 +101,4 @@ void TA0_0_IRQHandler(void){
         TIMER_A0->CCTL[0] &= ~BIT0;
         TIMER_A0->R = 0;
     }
-    __enable_irq();
 }

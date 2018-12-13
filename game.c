@@ -487,35 +487,42 @@ void end_pong(void){
     button_flag = 0;
 }
 
+//game to avoid the red enemies for as long as possible
 void run_dodge(void){
 
+    //initialize player state and obstacle states
     DODGE_STATE player_state = ALIVE;
+    DODGE_STATE obs_1_state = ALIVE;
+    DODGE_STATE obs_2_state = DEAD;
+    DODGE_STATE obs_3_state = DEAD;
+    DODGE_STATE obs_4_state = DEAD;
 
+    //initialize player and obstacle rectangles
     RECT player;
-    initialize_rectangle(&player,60,60,10,10,NAVY);
+    initialize_rectangle(&player,DODGE_PLAYER_START_X,DODGE_PLAYER_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,NAVY);
     LCD_draw_rectangle(player);
 
     RECT obs_1;
-    initialize_rectangle(&obs_1,20,20,10,10,RED);
+    initialize_rectangle(&obs_1,DODGE_OBS_1_START_X,DODGE_OBS_1_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
     LCD_draw_rectangle(obs_1);
     int8_t obs_1_x_velocity = 1;
     int8_t obs_1_y_velocity = 1;
 
     RECT obs_2;
-    initialize_rectangle(&obs_2,90,90,10,10,RED);
-    LCD_draw_rectangle(obs_2);
+    initialize_rectangle(&obs_2,DODGE_OBS_2_START_X,DODGE_OBS_2_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
+    //LCD_draw_rectangle(obs_2);
     int8_t obs_2_x_velocity = -1;
     int8_t obs_2_y_velocity = -1;
 
     RECT obs_3;
-    initialize_rectangle(&obs_3,90,20,10,10,RED);
-    LCD_draw_rectangle(obs_3);
+    initialize_rectangle(&obs_3,DODGE_OBS_3_START_X,DODGE_OBS_3_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
+    //LCD_draw_rectangle(obs_3);
     int8_t obs_3_x_velocity = -1;
     int8_t obs_3_y_velocity = 1;
 
     RECT obs_4;
-    initialize_rectangle(&obs_4,20,90,10,10,RED);
-    LCD_draw_rectangle(obs_4);
+    initialize_rectangle(&obs_4,DODGE_OBS_4_START_X,DODGE_OBS_4_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
+    //LCD_draw_rectangle(obs_4);
     int8_t obs_4_x_velocity = -1;
     int8_t obs_4_y_velocity = 1;
 
@@ -527,6 +534,7 @@ void run_dodge(void){
     timer_delay = 20;
     while(timer_delay);
 
+    //enter game loop
     while(player_state == ALIVE){
         ADC14->CTL0 |= ADC14_CTL0_SC;       //start ADC conversion
         if(timer_trigger){
@@ -565,58 +573,94 @@ void run_dodge(void){
             LCD_draw_rectangle(obs_1);
 
             //logic for movement of obstacle 2
-            LCD_erase_rectangle(obs_2);
-            if((obs_2.x <= 0) || (obs_2.x >= (127 - obs_2.width))){
-                obs_2_x_velocity *= -1;
+            if(obs_2_state == ALIVE){
+                LCD_erase_rectangle(obs_2);
+                if((obs_2.x <= 0) || (obs_2.x >= (127 - obs_2.width))){
+                    obs_2_x_velocity *= -1;
+                }
+                if((obs_2.y <= 11) || (obs_2.y >= (127 - obs_2.height))){
+                    obs_2_y_velocity *= -1;
+                }
+                obs_2.x += obs_2_x_velocity;
+                obs_2.y += obs_2_y_velocity;
+                LCD_draw_rectangle(obs_2);
             }
-            if((obs_2.y <= 11) || (obs_2.y >= (127 - obs_2.height))){
-                obs_2_y_velocity *= -1;
+            //after a certain amount of time, add obstacle 2
+            else if(timer_count >= DODGE_OBS_2_DELAY){
+                obs_2_state = ALIVE;
             }
-            obs_2.x += obs_2_x_velocity;
-            obs_2.y += obs_2_y_velocity;
-            LCD_draw_rectangle(obs_2);
 
             //logic for movement of obstacle 3
-            LCD_erase_rectangle(obs_3);
-            if((obs_3.x <= 0) || (obs_3.x >= (127 - obs_3.width))){
-                obs_3_x_velocity *= -1;
+            if(obs_3_state == ALIVE){
+                LCD_erase_rectangle(obs_3);
+                if((obs_3.x <= 0) || (obs_3.x >= (127 - obs_3.width))){
+                    obs_3_x_velocity *= -1;
+                }
+                if((obs_3.y <= 11) || (obs_3.y >= (127 - obs_3.height))){
+                    obs_3_y_velocity *= -1;
+                }
+                obs_3.x += obs_3_x_velocity;
+                obs_3.y += obs_3_y_velocity;
+                LCD_draw_rectangle(obs_3);
             }
-            if((obs_3.y <= 11) || (obs_3.y >= (127 - obs_3.height))){
-                obs_3_y_velocity *= -1;
+            //after a certain amount of time, add obstacle 3
+            else if(timer_count >= DODGE_OBS_3_DELAY){
+                obs_3_state = ALIVE;
             }
-            obs_3.x += obs_3_x_velocity;
-            obs_3.y += obs_3_y_velocity;
-            LCD_draw_rectangle(obs_3);
 
             //logic for movement of obstacle 4
-            LCD_erase_rectangle(obs_4);
-            if((obs_4.x <= 0) || (obs_4.x >= (127 - obs_4.width))){
-                obs_4_x_velocity *= -1;
+            if(obs_4_state == ALIVE){
+                LCD_erase_rectangle(obs_4);
+                if((obs_4.x <= 0) || (obs_4.x >= (127 - obs_4.width))){
+                    obs_4_x_velocity *= -1;
+                }
+                if((obs_4.y <= 11) || (obs_4.y >= (127 - obs_4.height))){
+                    obs_4_y_velocity *= -1;
+                }
+                obs_4.x += obs_4_x_velocity;
+                obs_4.y += obs_4_y_velocity;
+                LCD_draw_rectangle(obs_4);
             }
-            if((obs_4.y <= 11) || (obs_4.y >= (127 - obs_4.height))){
-                obs_4_y_velocity *= -1;
+            //after a certain amount of time, add obstacle 3
+            else if(timer_count >= DODGE_OBS_4_DELAY){
+                obs_4_state = ALIVE;
             }
-            obs_4.x += obs_4_x_velocity;
-            obs_4.y += obs_4_y_velocity;
-            LCD_draw_rectangle(obs_4);
 
             //if obstacle 1 collides with player, then player is dead
             if(((obs_1.x + obs_1.width) > player.x) && (obs_1.x < (player.x + player.width)) && ((obs_1.y + obs_1.height) > player.y) && (obs_1.y < (player.y + player.height))){
                 player_state = DEAD;
             }
-            //if obstacle 2 collides with player, then player is dead
+            //if obstacle 2 collides with player and obstacle 2 is in play, then player is dead
             else if(((obs_2.x + obs_2.width) > player.x) && (obs_2.x < (player.x + player.width)) && ((obs_2.y + obs_2.height) > player.y) && (obs_2.y < (player.y + player.height))){
-                player_state = DEAD;
+                if(obs_2_state == ALIVE){
+                    player_state = DEAD;
+                }
             }
-            //if obstacle 3 collides with player, then player is dead
+            //if obstacle 3 collides with player and obstacle 3 is in play, then player is dead
             else if(((obs_3.x + obs_3.width) > player.x) && (obs_3.x < (player.x + player.width)) && ((obs_3.y + obs_3.height) > player.y) && (obs_3.y < (player.y + player.height))){
-                player_state = DEAD;
-            }
-            //if obstacle 4 collides with player, then player is dead
+                if(obs_3_state == ALIVE){
+                    player_state = DEAD;
+                }            }
+            //if obstacle 4 collides with player and obstacle 4 is in play, then player is dead
             else if(((obs_4.x + obs_4.width) > player.x) && (obs_4.x < (player.x + player.width)) && ((obs_4.y + obs_4.height) > player.y) && (obs_4.y < (player.y + player.height))){
-                player_state = DEAD;
-            }
+                if(obs_4_state == ALIVE){
+                    player_state = DEAD;
+                }            }
 
+            /* this code currently bugs it out like crazy
+            //if the game goes long enough increase the speed
+            if(timer_count == 100){
+                obs_1_x_velocity *= 2;
+                obs_1_y_velocity *= 2;
+                obs_2_x_velocity *= 2;
+                obs_2_y_velocity *= 2;
+                obs_3_x_velocity *= 2;
+                obs_3_y_velocity *= 2;
+                obs_4_x_velocity *= 2;
+                obs_4_y_velocity *= 2;
+
+            }
+            */
             //print time survived
             itoa(timer_count,timer_count_string);
             LCD_write_string(timer_count_string,40,0,BLACK,sizeof(timer_count_string)/sizeof(uint8_t));

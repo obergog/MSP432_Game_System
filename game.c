@@ -13,24 +13,26 @@ const GAME game_array[3] = {DEBUG,PONG,DODGE};
 void initialize_buttons(void){
     button_flag = 0;
 
+    //upper button setup
     P5->SEL0 &= ~BIT1;
     P5->SEL0 &= ~BIT1;
     P5->DIR &= ~BIT1;
     P5->REN |= BIT1;
-    P5->OUT |= BIT1;
+    P5->OUT |= BIT1;            //pullup resistor activated
     P5->IFG &= ~BIT1;
-    P5->IES |= BIT1;
-    P5->IE |= BIT1;
+    P5->IES |= BIT1;            //falling edge trigger
+    P5->IE |= BIT1;             //interrupts enabled
     NVIC_EnableIRQ(PORT5_IRQn);
 
+    //lower button setup
     P3->SEL0 &= ~BIT3;
     P3->SEL0 &= ~BIT3;
     P3->DIR &= ~BIT3;
     P3->REN |= BIT3;
-    P3->OUT |= BIT3;
+    P3->OUT |= BIT3;            //pullup resistor activated
     P3->IFG &= ~BIT3;
-    P3->IES |= BIT3;
-    P3->IE |= BIT3;
+    P3->IES |= BIT3;            //falling edge trigger
+    P3->IE |= BIT3;             //interrupts enabled
     NVIC_EnableIRQ(PORT3_IRQn);
 }
 /*draws start screen*/
@@ -642,22 +644,25 @@ void run_dodge(void){
 
     timer_count = 30;
 }
+
+//bottom button interrupt handler
 void PORT3_IRQHandler(void){
-    __disable_irq();
-    if(P3IFG & BIT3){
-        button_flag = 1;
+    if(P3->IFG & BIT3){
+        if(!(P3->IN & BIT3)){
+            button_flag = 1;
+        }
         for(uint32_t i = 0; i < 100000; i++);
         P3->IFG &= ~BIT3;
     }
-    __enable_irq();
 }
 
+//top button interrupt handler
 void PORT5_IRQHandler(void){
-    __disable_irq();
-    if(P5IFG & BIT1){
-        button_flag = 1;
-        for(uint32_t i = 0; i < 100000; i++);
+    if(P5->IFG & BIT1){
+        for(uint32_t i = 0; i < 10000; i++);       //wait for button to stop bouncing
+        if(!(P5->IN & BIT1)){                       //check to make sure button is low after bouncing
+            button_flag = 1;
+        }
         P5->IFG &= ~BIT1;
     }
-    __enable_irq();
 }

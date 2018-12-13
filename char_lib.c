@@ -8,7 +8,6 @@
 #include "lcd.h"
 #include <stdint.h>
 
-
 const uint8_t char_lib_0[70] = { 0, 0, 0, 0, 0, 0, 0,
                                  0, 0, 1, 1, 1, 0, 0,
                                  0, 1, 0, 0, 0, 1, 0,
@@ -20,7 +19,7 @@ const uint8_t char_lib_0[70] = { 0, 0, 0, 0, 0, 0, 0,
                                  0, 0, 1, 1, 1, 0, 0,
                                  0, 0, 0, 0, 0, 0, 0 };
 
-const uint8_t char_lib_1[70] =   { 0, 0, 0, 0, 0, 0, 0,
+const uint8_t char_lib_1[70] = { 0, 0, 0, 0, 0, 0, 0,
                                  0, 1, 1, 1, 1, 1, 0,
                                  0, 0, 0, 1, 0, 0, 0,
                                  0, 0, 0, 1, 0, 0, 0,
@@ -120,15 +119,15 @@ const uint8_t char_lib_9[70] = { 0, 0, 0, 0, 0, 0, 0,
                                  0, 0, 0, 0, 0, 0, 0 };
 
 const uint8_t * char_lib_num[10] = {char_lib_0,
-                                     char_lib_1,
-                                     char_lib_2,
-                                     char_lib_3,
-                                     char_lib_4,
-                                     char_lib_5,
-                                     char_lib_6,
-                                     char_lib_7,
-                                     char_lib_8,
-                                     char_lib_9};
+                                    char_lib_1,
+                                    char_lib_2,
+                                    char_lib_3,
+                                    char_lib_4,
+                                    char_lib_5,
+                                    char_lib_6,
+                                    char_lib_7,
+                                    char_lib_8,
+                                    char_lib_9};
 
 const uint8_t char_lib_space[70] = {0, 0, 0, 0, 0, 0, 0,
                                     0, 0, 0, 0, 0, 0, 0,
@@ -552,7 +551,7 @@ const uint8_t * char_lib_ascii[128] = {char_lib_space, //0
                                        char_lib_W,
                                        char_lib_X,
                                        char_lib_Y,
-                                       char_lib_Z, //90
+                                       char_lib_Z,     //90
                                        char_lib_space,
                                        char_lib_space,
                                        char_lib_space,

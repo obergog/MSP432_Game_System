@@ -39,8 +39,8 @@ void initialize_buttons(void){
 void draw_start_screen(void){
     LCD_erase_screen();
 
-    initialize_rectangle(&start_screen,30,40,7*12,20,BLACK);
-    LCD_write_string("PRESS BUTTON",start_screen.x,start_screen.y + 10,BLACK,12);
+    initialize_rectangle(&start_screen,START_SCREEN_X,START_SCREEN_Y,START_SCREEN_WIDTH,START_SCREEN_HEIGHT,BLACK);
+    LCD_write_string("PRESS BUTTON",start_screen.x,start_screen.y + LINE_HEIGHT,BLACK,12);
     LCD_write_string("  TO START  ",start_screen.x,start_screen.y,BLACK,12);
     while(!button_flag);
     start_screen.x -= 7;
@@ -48,9 +48,8 @@ void draw_start_screen(void){
     start_screen.x += 7;
     button_flag = 0;
 
-    LCD_write_string(" WAIT ", 50,50,BLACK,6);
-
-    timer_delay = 30;
+    //LCD_write_string(" WAIT ", 50,50,BLACK,6);
+    //timer_delay = 30;
 }
 
 //allows the user to select what game they want to play
@@ -60,38 +59,38 @@ void select_game(void){
     current_game = 2;
 
     RECT game_menu;
-    initialize_rectangle(&game_menu,30,30,7*11,40,BLACK);
+    initialize_rectangle(&game_menu,GAME_MENU_X,GAME_MENU_Y,GAME_MENU_WIDTH,GAME_MENU_HEIGHT,BLACK);
 
     RECT game_select;
-    initialize_rectangle(&game_select,7*11 + 30,30,10,10,RED);
+    initialize_rectangle(&game_select,GAME_SELECT_X,GAME_SELECT_Y,GAME_SELECT_WIDTH,GAME_SELECT_HEIGTH,RED);
     LCD_draw_rectangle(game_select);
 
-    LCD_write_string("CHOOSE GAME",game_menu.x,game_menu.y + 30,RED,11);
-    LCD_write_string(" DEBUG     ",game_menu.x,game_menu.y + 20,BLACK,11);
-    LCD_write_string(" PONG      ",game_menu.x,game_menu.y + 10,BLACK,11);
+    LCD_write_string("CHOOSE GAME",game_menu.x,game_menu.y + 3*LINE_HEIGHT,RED,11);
+    LCD_write_string(" DEBUG     ",game_menu.x,game_menu.y + 2*LINE_HEIGHT,BLACK,11);
+    LCD_write_string(" PONG      ",game_menu.x,game_menu.y + LINE_HEIGHT,BLACK,11);
     LCD_write_string(" DODGE     ",game_menu.x,game_menu.y,BLACK,11);
 
 
     while(!button_flag){
         ADC14->CTL0 |= ADC14_CTL0_SC;       //start ADC conversion
         if(timer_trigger && !timer_delay){
-	    //if joystick is moved up and the selection is not already at the top, move selection
+            //if joystick is moved up and the selection is not already at the top, move selection
             if((bit_joy_y > 10000) && (current_game > 0)){
                 LCD_erase_rectangle(game_select);
-		//change game selection
+                //change game selection
                 current_game--;
-		//change visual selection box
-                game_select.y += 10;
+                //change visual selection box
+                game_select.y += LINE_HEIGHT;
                 LCD_draw_rectangle(game_select);
                 timer_delay = 10;
             }
-	    //if joystick is moved down and the selection is not already at the bottom, move selection
+            //if joystick is moved down and the selection is not already at the bottom, move selection
             else if((bit_joy_y < 6000) && (current_game < 2)){
                 LCD_erase_rectangle(game_select);
-		//change game selection
+                //change game selection
                 current_game++;
-		//change visual selection box
-                game_select.y -= 10;
+                //change visual selection box
+                game_select.y -= LINE_HEIGHT;
                 LCD_draw_rectangle(game_select);
                 timer_delay = 10;
             }

@@ -13,6 +13,24 @@
 #ifndef GAME_H_
 #define GAME_H_
 
+//macros for start screen
+#define START_SCREEN_HEIGHT     20
+#define START_SCREEN_WIDTH      7*12
+#define START_SCREEN_X          30
+#define START_SCREEN_Y          40
+#define LINE_HEIGHT             10
+
+//macros for game menu
+#define GAME_MENU_X             30
+#define GAME_MENU_Y             30
+#define GAME_MENU_HEIGHT        40
+#define GAME_MENU_WIDTH         7*11
+
+#define GAME_SELECT_X           GAME_MENU_X + GAME_MENU_WIDTH
+#define GAME_SELECT_Y           GAME_MENU_Y
+#define GAME_SELECT_HEIGTH      10
+#define GAME_SELECT_WIDTH       10
+
 //macros for dodge game
 #define DODGE_BOX_HEIGHT        10
 #define DODGE_BOX_WIDTH         10

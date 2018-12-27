@@ -40,12 +40,12 @@ void draw_start_screen(void){
     LCD_erase_screen();
 
     initialize_rectangle(&start_screen,START_SCREEN_X,START_SCREEN_Y,START_SCREEN_WIDTH,START_SCREEN_HEIGHT,BLACK);
-    LCD_write_string("PRESS BUTTON",start_screen.x,start_screen.y + LINE_HEIGHT,BLACK,12);
+    LCD_write_string("PRESS BUTTON",start_screen.x,start_screen.y + LCD_CHAR_HEIGHT,BLACK,12);
     LCD_write_string("  TO START  ",start_screen.x,start_screen.y,BLACK,12);
     while(!button_flag);
-    start_screen.x -= 7;
+    start_screen.x -= LCD_CHAR_WIDTH;
     LCD_erase_rectangle(start_screen);
-    start_screen.x += 7;
+    start_screen.x += LCD_CHAR_WIDTH;
     button_flag = 0;
 
     //LCD_write_string(" WAIT ", 50,50,BLACK,6);
@@ -65,9 +65,9 @@ void select_game(void){
     initialize_rectangle(&game_select,GAME_SELECT_X,GAME_SELECT_Y,GAME_SELECT_WIDTH,GAME_SELECT_HEIGTH,RED);
     LCD_draw_rectangle(game_select);
 
-    LCD_write_string("CHOOSE GAME",game_menu.x,game_menu.y + 3*LINE_HEIGHT,RED,11);
-    LCD_write_string(" DEBUG     ",game_menu.x,game_menu.y + 2*LINE_HEIGHT,BLACK,11);
-    LCD_write_string(" PONG      ",game_menu.x,game_menu.y + LINE_HEIGHT,BLACK,11);
+    LCD_write_string("CHOOSE GAME",game_menu.x,game_menu.y + 3*LCD_CHAR_HEIGHT,RED,11);
+    LCD_write_string(" DEBUG     ",game_menu.x,game_menu.y + 2*LCD_CHAR_HEIGHT,BLACK,11);
+    LCD_write_string(" PONG      ",game_menu.x,game_menu.y + LCD_CHAR_HEIGHT,BLACK,11);
     LCD_write_string(" DODGE     ",game_menu.x,game_menu.y,BLACK,11);
 
 
@@ -75,29 +75,29 @@ void select_game(void){
         ADC14->CTL0 |= ADC14_CTL0_SC;       //start ADC conversion
         if(timer_trigger && !timer_delay){
             //if joystick is moved up and the selection is not already at the top, move selection
-            if((bit_joy_y > 10000) && (current_game > 0)){
+            if((bit_joy_y > JOY_HIGH_THRESHOLD) && (current_game > 0)){
                 LCD_erase_rectangle(game_select);
                 //change game selection
                 current_game--;
                 //change visual selection box
-                game_select.y += LINE_HEIGHT;
+                game_select.y += LCD_CHAR_HEIGHT;
                 LCD_draw_rectangle(game_select);
                 timer_delay = 10;
             }
             //if joystick is moved down and the selection is not already at the bottom, move selection
-            else if((bit_joy_y < 6000) && (current_game < 2)){
+            else if((bit_joy_y < JOY_LOW_THRESHOLD) && (current_game < 2)){
                 LCD_erase_rectangle(game_select);
                 //change game selection
                 current_game++;
                 //change visual selection box
-                game_select.y -= LINE_HEIGHT;
+                game_select.y -= LCD_CHAR_HEIGHT;
                 LCD_draw_rectangle(game_select);
                 timer_delay = 10;
             }
         }
     }
     LCD_erase_rectangle(game_select);
-    game_menu.x -= 7;
+    game_menu.x -= LCD_CHAR_WIDTH;
     LCD_erase_rectangle(game_menu);
     button_flag = 0;
 
@@ -146,31 +146,31 @@ void full_debug(void){
         ADC14->CTL0 |= ADC14_CTL0_SC;       //start ADC conversion
         if(timer_trigger && ~timer_delay){
             //Joy Vertical
-            if(bit_joy_y > 10000){
+            if(bit_joy_y > JOY_HIGH_THRESHOLD){
                 //Vertical Up
-                LCD_write_string("V UP", (127-(7*4)), 107, BLACK, 4);
+                LCD_write_string("V UP", DEBUG_DIRECTION_X, DEBUG_VERTICAL_Y, BLACK, 4);
             }
-            else if(bit_joy_y < 6000){
+            else if(bit_joy_y < JOY_LOW_THRESHOLD){
                 //Vertical Down
-                LCD_write_string("V DN", (127-(7*4)), 107, BLACK, 4);
+                LCD_write_string("V DN", DEBUG_DIRECTION_X, DEBUG_VERTICAL_Y, BLACK, 4);
             }
             else{
                 //Vertical Mid
-                LCD_write_string("V MD", (127-(7*4)), 107, BLACK, 4);
+                LCD_write_string("V MD", DEBUG_DIRECTION_X, DEBUG_VERTICAL_Y, BLACK, 4);
             }
 
             //Joy Horizontal
-            if(bit_joy_x > 10000){
+            if(bit_joy_x > JOY_HIGH_THRESHOLD){
                 //Horizontal Right
-                LCD_write_string("H RT", (127-(7*4)), 87, BLACK, 4);
+                LCD_write_string("H RT", DEBUG_DIRECTION_X, DEBUG_HORIZONTAL_Y, BLACK, 4);
             }
-            else if(bit_joy_x < 6000){
+            else if(bit_joy_x < JOY_LOW_THRESHOLD){
                 //Horizontal Left
-                LCD_write_string("H LT", (127-(7*4)), 87, BLACK, 4);
+                LCD_write_string("H LT", DEBUG_DIRECTION_X, DEBUG_HORIZONTAL_Y, BLACK, 4);
             }
             else{
                 //Horizontal Mid
-                LCD_write_string("H MD", (127-(7*4)), 87, BLACK, 4);
+                LCD_write_string("H MD", DEBUG_DIRECTION_X, DEBUG_HORIZONTAL_Y, BLACK, 4);
             }
 
             //write actual joystick bit values
@@ -179,21 +179,21 @@ void full_debug(void){
                 bit_joy_y_string[i] = ' ';
             }
             itoa(bit_joy_y,bit_joy_y_string);
-            LCD_write_string(bit_joy_y_string,10,107,BLACK,4);
+            LCD_write_string(bit_joy_y_string,10,DEBUG_VERTICAL_Y,BLACK,4);
             for(i=0; i < sizeof(bit_joy_x_string)/sizeof(uint8_t); i++){
                 bit_joy_x_string[i] = ' ';
             }
             itoa(bit_joy_x,bit_joy_x_string);
-            LCD_write_string(bit_joy_x_string,10,87,BLACK,4);
+            LCD_write_string(bit_joy_x_string,10,DEBUG_HORIZONTAL_Y,BLACK,4);
 
             //Button
-            LCD_write_string("BUTTON", (127-(7*6)), 67, BLACK, 6);
+            LCD_write_string("BUTTON", DEBUG_BUTTON_X, DEBUG_BUTTON_Y, BLACK, 6);
             if(button_flag){
                 //Yes Button
                 button_toggle ^= 1;
                 button_flag = 0;
             }
-            LCD_write_character(char_lib_num[button_toggle],(127-(7*8)), 67, BLACK);
+            LCD_write_character(char_lib_num[button_toggle],DEBUG_BUTTON_TOGGLE_X, DEBUG_BUTTON_Y, BLACK);
             timer_trigger = 0;
         }
         button_flag = 0;
@@ -255,13 +255,13 @@ void pong_max_score(void){
     while(!button_flag){
         ADC14->CTL0 |= ADC14_CTL0_SC;       //start ADC conversion
         if ((timer_trigger == 1) && !timer_delay){
-            if(bit_joy_y > 10000){
+            if(bit_joy_y > JOY_HIGH_THRESHOLD){
                 max_score++;
                 max_score = max_score % 10;
                 LCD_write_character(char_lib_num[max_score],60,start_screen.y,BLACK);
                 timer_delay = 10;
             }
-            if((bit_joy_y < 6000)){
+            if((bit_joy_y < JOY_LOW_THRESHOLD)){
                 if(max_score == 0){
                     max_score = 9;
                 }
@@ -305,14 +305,14 @@ void pong_paddle_color(void){
     while(!button_flag){
         ADC14->CTL0 |= ADC14_CTL0_SC;       //start ADC conversion
         if ((timer_trigger == 1) && !timer_delay){
-            if(bit_joy_y > 10000){
+            if(bit_joy_y > JOY_HIGH_THRESHOLD){
                 left_paddle_color++;
                 left_paddle_color = left_paddle_color % 14;
                 left.color = color_array[left_paddle_color];
                 LCD_draw_rectangle(left);
                 timer_delay = 10;
             }
-            else if(bit_joy_y < 6000){
+            else if(bit_joy_y < JOY_LOW_THRESHOLD){
                 if(left_paddle_color == 0){
                     left_paddle_color = 13;
                 }
@@ -323,14 +323,14 @@ void pong_paddle_color(void){
                 LCD_draw_rectangle(left);
                 timer_delay = 10;
             }
-            if(bit_joy_x > 10000){
+            if(bit_joy_x > JOY_HIGH_THRESHOLD){
                 right_paddle_color++;
                 right_paddle_color = right_paddle_color % 14;
                 right.color = color_array[right_paddle_color];
                 LCD_draw_rectangle(right);
                 timer_delay = 10;
             }
-            else if(bit_joy_x < 6000){
+            else if(bit_joy_x < JOY_LOW_THRESHOLD){
                 if(right_paddle_color == 0){
                     right_paddle_color = 13;
                 }
@@ -418,7 +418,7 @@ void pong_main(void){
             LCD_draw_rectangle(ball);
 
             //left paddle movement with joystick
-            if((bit_joy_y > 10000) && (left.y != (127 - left.height))){  //up && not top
+            if((bit_joy_y > JOY_HIGH_THRESHOLD) && (left.y != (127 - left.height))){  //up && not top
                 //move up
                 LCD_erase_rectangle(left);
                 left.y++;
@@ -427,7 +427,7 @@ void pong_main(void){
                     yvelocity++;
                 }
             }
-            if((bit_joy_y < 6000) && (left.y >= (field_bottom +1))){  //down && not bottom
+            if((bit_joy_y < JOY_LOW_THRESHOLD) && (left.y >= (field_bottom +1))){  //down && not bottom
                 //move down
                 LCD_erase_rectangle(left);
                 left.y--;
@@ -438,7 +438,7 @@ void pong_main(void){
             }
 
             //right - sloppily done with joystick x axis until we have second joystick
-            if((bit_joy_x > 10000) && (right.y != (127 - right.height))){  //up (right) && not top
+            if((bit_joy_x > JOY_HIGH_THRESHOLD) && (right.y != (127 - right.height))){  //up (right) && not top
                 //move up
                 LCD_erase_rectangle(right);
                 right.y++;
@@ -447,7 +447,7 @@ void pong_main(void){
                     yvelocity++;
                 }
             }
-            if((bit_joy_x < 6000) && (right.y >= (field_bottom + 1))){  //down (left) && not bottom
+            if((bit_joy_x < JOY_LOW_THRESHOLD) && (right.y >= (field_bottom + 1))){  //down (left) && not bottom
                 //move down
                 LCD_erase_rectangle(right);
                 right.y--;
@@ -538,22 +538,22 @@ void run_dodge(void){
         ADC14->CTL0 |= ADC14_CTL0_SC;       //start ADC conversion
         if(timer_trigger){
             //logic to move player around
-            if((bit_joy_x > 10000) && (player.x >= 1)){
+            if((bit_joy_x > JOY_HIGH_THRESHOLD) && (player.x >= 1)){
                 LCD_erase_rectangle(player);
                 player.x--;
                 LCD_draw_rectangle(player);
             }
-            else if((bit_joy_x < 6000) && player.x <= (127-player.width)){
+            else if((bit_joy_x < JOY_LOW_THRESHOLD) && player.x <= (127-player.width)){
                 LCD_erase_rectangle(player);
                 player.x++;
                 LCD_draw_rectangle(player);
             }
-            if((bit_joy_y > 10000) && player.y <= (127-player.height)){
+            if((bit_joy_y > JOY_HIGH_THRESHOLD) && player.y <= (127-player.height)){
                 LCD_erase_rectangle(player);
                 player.y++;
                 LCD_draw_rectangle(player);
             }
-            else if((bit_joy_y < 6000) && (player.y >= 12)){
+            else if((bit_joy_y < JOY_LOW_THRESHOLD) && (player.y >= 12)){
                 LCD_erase_rectangle(player);
                 player.y--;
                 LCD_draw_rectangle(player);

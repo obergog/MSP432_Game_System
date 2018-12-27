@@ -9,34 +9,39 @@
 #ifndef LCD_H_
 #define LCD_H_
 
+//macros for screen orientation
+#define LCD_MAX_X           127
+#define LCD_CHAR_HEIGHT     10
+#define LCD_CHAR_WIDTH      7
+
 /*command macros to be sent to the LCD*/
-#define SLPOUT      0x11    //Sleep Out
-#define GAMSET      0x26    //Gamma Set
-#define FRMCTR1     0xB1    //Frame Rate Control 1
-#define PWCTR1      0xC0    //Power Control 1
-#define COLMOD      0x3A    //Interface Pixel Format
-#define MADCTL      0x36    //Memory Data Access Control
-#define NORON       0x13    //Normal Display Mode On
-#define CASET       0x2A    //Column Address Set
-#define RASET       0x2B    //Row Address Set
-#define RAMWR       0x2C    //Memory Write
-#define DISPON      0x29    //Display On
+#define SLPOUT              0x11    //Sleep Out
+#define GAMSET              0x26    //Gamma Set
+#define FRMCTR1             0xB1    //Frame Rate Control 1
+#define PWCTR1              0xC0    //Power Control 1
+#define COLMOD              0x3A    //Interface Pixel Format
+#define MADCTL              0x36    //Memory Data Access Control
+#define NORON               0x13    //Normal Display Mode On
+#define CASET               0x2A    //Column Address Set
+#define RASET               0x2B    //Row Address Set
+#define RAMWR               0x2C    //Memory Write
+#define DISPON              0x29    //Display On
 
 /*16-bit color values*/
-#define BLACK       0x0000
-#define WHITE       0xFFFF
-#define RED         0xF800
-#define BLUE        0x001F
-#define GREEN       0x07E0
-#define YELLOW      (RED + GREEN)
-#define CYAN        (BLUE + GREEN)
-#define MAGENTA     (RED + BLUE)
-#define DARKGREEN   0x03E0
-#define MAROON      0x8800
-#define NAVY        0x000F
-#define OLIVE       (MAROON + DARKGREEN)
-#define PURPLE      (MAROON + NAVY)
-#define TEAL        (NAVY + DARKGREEN)
+#define BLACK               0x0000
+#define WHITE               0xFFFF
+#define RED                 0xF800
+#define BLUE                0x001F
+#define GREEN               0x07E0
+#define YELLOW              (RED + GREEN)
+#define CYAN                (BLUE + GREEN)
+#define MAGENTA             (RED + BLUE)
+#define DARKGREEN           0x03E0
+#define MAROON              0x8800
+#define NAVY                0x000F
+#define OLIVE               (MAROON + DARKGREEN)
+#define PURPLE              (MAROON + NAVY)
+#define TEAL                (NAVY + DARKGREEN)
 
 extern const uint16_t color_array[14];
 

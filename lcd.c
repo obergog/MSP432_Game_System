@@ -203,8 +203,8 @@ void LCD_write_character(const uint8_t * array, uint8_t x0, uint8_t y0, uint16_t
 /*write the given string to the LCD with given length at (x0,y0) with given color*/
 void LCD_write_string(uint8_t * string, uint8_t x0, uint8_t y0, uint16_t color, uint8_t length){
     int8_t i;
-    for(i = (length -1); i >= 0; i--){
-        LCD_write_character(char_lib_ascii[string[i]],x0+(7*(length -2)) - (7*i),y0,color);
+    for(i = (length - 1); i >= 0; i--){
+        LCD_write_character(char_lib_ascii[string[i]],x0+(LCD_CHAR_WIDTH*(length - 2)) - (LCD_CHAR_WIDTH*i),y0,color);
     }
 }
 

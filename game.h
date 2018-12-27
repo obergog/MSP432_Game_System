@@ -13,18 +13,20 @@
 #ifndef GAME_H_
 #define GAME_H_
 
+//macros for joystick movement
+#define JOY_HIGH_THRESHOLD      10000
+#define JOY_LOW_THRESHOLD       6000
 //macros for start screen
 #define START_SCREEN_HEIGHT     20
-#define START_SCREEN_WIDTH      7*12
+#define START_SCREEN_WIDTH      LCD_CHAR_WIDTH * 12
 #define START_SCREEN_X          30
 #define START_SCREEN_Y          40
-#define LINE_HEIGHT             10
 
 //macros for game menu
 #define GAME_MENU_X             30
 #define GAME_MENU_Y             30
 #define GAME_MENU_HEIGHT        40
-#define GAME_MENU_WIDTH         7*11
+#define GAME_MENU_WIDTH         LCD_CHAR_WIDTH * 11
 
 #define GAME_SELECT_X           GAME_MENU_X + GAME_MENU_WIDTH
 #define GAME_SELECT_Y           GAME_MENU_Y
@@ -48,6 +50,14 @@
 #define DODGE_OBS_2_DELAY       15
 #define DODGE_OBS_3_DELAY       30
 #define DODGE_OBS_4_DELAY       45
+
+//macros for debug
+#define DEBUG_DIRECTION_X       (LCD_MAX_X-(LCD_CHAR_WIDTH*4))
+#define DEBUG_VERTICAL_Y        107
+#define DEBUG_HORIZONTAL_Y      87
+#define DEBUG_BUTTON_X          (LCD_MAX_X-(LCD_CHAR_WIDTH*6))
+#define DEBUG_BUTTON_TOGGLE_X   (LCD_MAX_X-(LCD_CHAR_WIDTH*9))
+#define DEBUG_BUTTON_Y          67
 
 //enums used menu navigation
 typedef enum {

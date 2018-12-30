@@ -489,6 +489,8 @@ void end_pong(void){
 //game to avoid the red enemies for as long as possible
 void run_dodge(void){
 
+    uint8_t obs_speed = 1;
+
     //initialize player state and obstacle states
     DODGE_STATE player_state = ALIVE;
     DODGE_STATE obs_1_state = ALIVE;
@@ -504,26 +506,26 @@ void run_dodge(void){
     RECT obs_1;
     initialize_rectangle(&obs_1,DODGE_OBS_1_START_X,DODGE_OBS_1_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
     LCD_draw_rectangle(obs_1);
-    int8_t obs_1_x_velocity = 1;
-    int8_t obs_1_y_velocity = 1;
+    int8_t obs_1_x_velocity = obs_speed;
+    int8_t obs_1_y_velocity = obs_speed;
 
     RECT obs_2;
     initialize_rectangle(&obs_2,DODGE_OBS_2_START_X,DODGE_OBS_2_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
     //LCD_draw_rectangle(obs_2);
-    int8_t obs_2_x_velocity = -1;
-    int8_t obs_2_y_velocity = -1;
+    int8_t obs_2_x_velocity = -1 * obs_speed;
+    int8_t obs_2_y_velocity = -1 * obs_speed;
 
     RECT obs_3;
     initialize_rectangle(&obs_3,DODGE_OBS_3_START_X,DODGE_OBS_3_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
     //LCD_draw_rectangle(obs_3);
-    int8_t obs_3_x_velocity = -1;
-    int8_t obs_3_y_velocity = 1;
+    int8_t obs_3_x_velocity = -1 * obs_speed;
+    int8_t obs_3_y_velocity = obs_speed;
 
     RECT obs_4;
     initialize_rectangle(&obs_4,DODGE_OBS_4_START_X,DODGE_OBS_4_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
     //LCD_draw_rectangle(obs_4);
-    int8_t obs_4_x_velocity = -1;
-    int8_t obs_4_y_velocity = 1;
+    int8_t obs_4_x_velocity = -1 * obs_speed;
+    int8_t obs_4_y_velocity = obs_speed;
 
     LCD_write_string("TIME:",80,0,BLACK,5);
 
@@ -561,11 +563,17 @@ void run_dodge(void){
 
             //logic for movement of obstacle 1
             LCD_erase_rectangle(obs_1);
-            if((obs_1.x <= 0) || (obs_1.x >= (LCD_MAX_X - obs_1.width))){
-                obs_1_x_velocity *= -1;
+            if(obs_1.x <= 0){
+                obs_1_x_velocity = obs_speed;
             }
-            if((obs_1.y <= 11) || (obs_1.y >= (LCD_MAX_Y - obs_1.height))){
-                obs_1_y_velocity *= -1;
+            else if(obs_1.x >= (LCD_MAX_X - obs_1.width)){
+                obs_1_x_velocity = -1 * obs_speed;
+            }
+            if(obs_1.y <= 11){
+                obs_1_y_velocity = obs_speed;
+            }
+            else if(obs_1.y >= (LCD_MAX_Y - obs_1.height)){
+                obs_1_y_velocity = -1 * obs_speed;
             }
             obs_1.x += obs_1_x_velocity;
             obs_1.y += obs_1_y_velocity;
@@ -574,11 +582,17 @@ void run_dodge(void){
             //logic for movement of obstacle 2
             if(obs_2_state == ALIVE){
                 LCD_erase_rectangle(obs_2);
-                if((obs_2.x <= 0) || (obs_2.x >= (LCD_MAX_X - obs_2.width))){
-                    obs_2_x_velocity *= -1;
+                if(obs_2.x <= 0){
+                    obs_2_x_velocity = obs_speed;
                 }
-                if((obs_2.y <= 11) || (obs_2.y >= (LCD_MAX_Y - obs_2.height))){
-                    obs_2_y_velocity *= -1;
+                else if(obs_2.x >= (LCD_MAX_X - obs_2.width)){
+                    obs_2_x_velocity = -1 * obs_speed;
+                }
+                if(obs_2.y <= 11){
+                    obs_2_y_velocity = obs_speed;
+                }
+                else if(obs_2.y >= (LCD_MAX_Y - obs_2.height)){
+                    obs_2_y_velocity = -1 * obs_speed;
                 }
                 obs_2.x += obs_2_x_velocity;
                 obs_2.y += obs_2_y_velocity;
@@ -592,11 +606,17 @@ void run_dodge(void){
             //logic for movement of obstacle 3
             if(obs_3_state == ALIVE){
                 LCD_erase_rectangle(obs_3);
-                if((obs_3.x <= 0) || (obs_3.x >= (LCD_MAX_X - obs_3.width))){
-                    obs_3_x_velocity *= -1;
+                if(obs_3.x <= 0){
+                    obs_3_x_velocity = obs_speed;
                 }
-                if((obs_3.y <= 11) || (obs_3.y >= (LCD_MAX_Y - obs_3.height))){
-                    obs_3_y_velocity *= -1;
+                else if(obs_3.x >= (LCD_MAX_X - obs_3.width)){
+                    obs_3_x_velocity = -1 * obs_speed;
+                }
+                if(obs_3.y <= 11){
+                    obs_3_y_velocity = obs_speed;
+                }
+                else if(obs_3.y >= (LCD_MAX_Y - obs_3.height)){
+                    obs_3_y_velocity = -1 * obs_speed;
                 }
                 obs_3.x += obs_3_x_velocity;
                 obs_3.y += obs_3_y_velocity;
@@ -610,11 +630,17 @@ void run_dodge(void){
             //logic for movement of obstacle 4
             if(obs_4_state == ALIVE){
                 LCD_erase_rectangle(obs_4);
-                if((obs_4.x <= 0) || (obs_4.x >= (LCD_MAX_X - obs_4.width))){
-                    obs_4_x_velocity *= -1;
+                if(obs_4.x <= 0){
+                    obs_4_x_velocity = obs_speed;
                 }
-                if((obs_4.y <= 11) || (obs_4.y >= (LCD_MAX_Y - obs_4.height))){
-                    obs_4_y_velocity *= -1;
+                else if(obs_4.x >= (LCD_MAX_X - obs_4.width)){
+                    obs_4_x_velocity = -1 * obs_speed;
+                }
+                if(obs_4.y <= 11){
+                    obs_4_y_velocity = obs_speed;
+                }
+                else if(obs_4.y >= (LCD_MAX_Y - obs_4.height)){
+                    obs_4_y_velocity = -1 * obs_speed;
                 }
                 obs_4.x += obs_4_x_velocity;
                 obs_4.y += obs_4_y_velocity;
@@ -646,20 +672,11 @@ void run_dodge(void){
                     player_state = DEAD;
                 }            }
 
-            /* this code currently bugs it out like crazy
             //if the game goes long enough increase the speed
             if(timer_count == 100){
-                obs_1_x_velocity *= 2;
-                obs_1_y_velocity *= 2;
-                obs_2_x_velocity *= 2;
-                obs_2_y_velocity *= 2;
-                obs_3_x_velocity *= 2;
-                obs_3_y_velocity *= 2;
-                obs_4_x_velocity *= 2;
-                obs_4_y_velocity *= 2;
-
+                obs_speed = 2;
             }
-            */
+
             //print time survived
             itoa(timer_count,timer_count_string);
             LCD_write_string(timer_count_string,40,0,BLACK,sizeof(timer_count_string)/sizeof(uint8_t));

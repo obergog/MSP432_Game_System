@@ -11,6 +11,7 @@
 
 //macros for screen orientation
 #define LCD_MAX_X           127
+#define LCD_MAX_Y           127
 #define LCD_CHAR_HEIGHT     10
 #define LCD_CHAR_WIDTH      7
 

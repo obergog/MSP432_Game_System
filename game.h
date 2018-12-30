@@ -30,8 +30,19 @@
 
 #define GAME_SELECT_X           GAME_MENU_X + GAME_MENU_WIDTH
 #define GAME_SELECT_Y           GAME_MENU_Y
-#define GAME_SELECT_HEIGTH      10
+#define GAME_SELECT_HEIGHT      10
 #define GAME_SELECT_WIDTH       10
+
+//macros for pong
+#define PONG_PADDLE_WIDTH       10
+#define PONG_PADDLE_HEIGHT      40
+#define PONG_BALL_WIDTH         10
+#define PONG_BALL_HEIGHT        10
+#define PONG_INITIAL_BALL_X     50
+#define PONG_INITIAL_BALL_Y     50
+#define PONG_LEFT_PADDLE_X      117
+#define PONG_RIGHT_PADDLE_X     0
+#define PONG_INITIAL_PADDLE_Y   50
 
 //macros for dodge game
 #define DODGE_BOX_HEIGHT        10

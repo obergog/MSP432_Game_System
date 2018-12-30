@@ -62,7 +62,7 @@ void select_game(void){
     initialize_rectangle(&game_menu,GAME_MENU_X,GAME_MENU_Y,GAME_MENU_WIDTH,GAME_MENU_HEIGHT,BLACK);
 
     RECT game_select;
-    initialize_rectangle(&game_select,GAME_SELECT_X,GAME_SELECT_Y,GAME_SELECT_WIDTH,GAME_SELECT_HEIGTH,RED);
+    initialize_rectangle(&game_select,GAME_SELECT_X,GAME_SELECT_Y,GAME_SELECT_WIDTH,GAME_SELECT_HEIGHT,RED);
     LCD_draw_rectangle(game_select);
 
     LCD_write_string("CHOOSE GAME",game_menu.x,game_menu.y + 3*LCD_CHAR_HEIGHT,RED,11);
@@ -224,13 +224,13 @@ void initialize_pong(void){
     }
 
 
-    initialize_rectangle(&ball, 50, 50, 10, 10, ball_color);
+    initialize_rectangle(&ball, PONG_INITIAL_BALL_X, PONG_INITIAL_BALL_Y, PONG_BALL_WIDTH, PONG_BALL_HEIGHT, ball_color);
     LCD_draw_rectangle(ball);
 
-    initialize_rectangle(&right, 0, 50, 10, 40, color_array[right_paddle_color]);
+    initialize_rectangle(&right, PONG_RIGHT_PADDLE_X, PONG_INITIAL_PADDLE_Y, PONG_PADDLE_WIDTH, PONG_PADDLE_HEIGHT, color_array[right_paddle_color]);
     LCD_draw_rectangle(right);
 
-    initialize_rectangle(&left, 117, 50, 10, 40, color_array[left_paddle_color]);
+    initialize_rectangle(&left, PONG_LEFT_PADDLE_X, PONG_INITIAL_PADDLE_Y, PONG_PADDLE_WIDTH, PONG_PADDLE_HEIGHT, color_array[left_paddle_color]);
     LCD_draw_rectangle(left);
 
     //draw a line to separate the field and scoreboard
@@ -257,7 +257,7 @@ void pong_max_score(void){
         if ((timer_trigger == 1) && !timer_delay){
             if(bit_joy_y > JOY_HIGH_THRESHOLD){
                 max_score++;
-                max_score = max_score % 10;
+                max_score = max_score % 10;                 //max score cannot be any larger than 10
                 LCD_write_character(char_lib_num[max_score],60,start_screen.y,BLACK);
                 timer_delay = 10;
             }
@@ -296,10 +296,10 @@ void pong_paddle_color(void){
 
     LCD_write_string("SELECT COLOR",start_screen.x,start_screen.y + 10,BLACK,12);
 
-    initialize_rectangle(&right, 0, 50, 10, 40, color_array[right_paddle_color]);
+    initialize_rectangle(&right, PONG_RIGHT_PADDLE_X, PONG_INITIAL_PADDLE_Y, PONG_PADDLE_WIDTH, PONG_PADDLE_HEIGHT, color_array[right_paddle_color]);
     LCD_draw_rectangle(right);
 
-    initialize_rectangle(&left, 117, 50, 10, 40, color_array[left_paddle_color]);
+    initialize_rectangle(&left, PONG_LEFT_PADDLE_X, PONG_INITIAL_PADDLE_Y, PONG_PADDLE_WIDTH, PONG_PADDLE_HEIGHT, color_array[left_paddle_color]);
     LCD_draw_rectangle(left);
 
     while(!button_flag){
@@ -376,7 +376,7 @@ void pong_main(void){
                 LCD_write_string(bit_joy_x_string,10,11,BLACK,4);
             }
 
-            if((ball.y <= field_bottom) || (ball.y >= (127 - ball.height))){
+            if((ball.y <= field_bottom) || (ball.y >= (LCD_MAX_Y - ball.height))){
                 yvelocity *= -1;
             }
             /*is ball at left edge of field?*/
@@ -418,7 +418,7 @@ void pong_main(void){
             LCD_draw_rectangle(ball);
 
             //left paddle movement with joystick
-            if((bit_joy_y > JOY_HIGH_THRESHOLD) && (left.y != (127 - left.height))){  //up && not top
+            if((bit_joy_y > JOY_HIGH_THRESHOLD) && (left.y != (LCD_MAX_Y - left.height))){  //up && not top
                 //move up
                 LCD_erase_rectangle(left);
                 left.y++;
@@ -438,7 +438,7 @@ void pong_main(void){
             }
 
             //right - sloppily done with joystick x axis until we have second joystick
-            if((bit_joy_x > JOY_HIGH_THRESHOLD) && (right.y != (127 - right.height))){  //up (right) && not top
+            if((bit_joy_x > JOY_HIGH_THRESHOLD) && (right.y != (LCD_MAX_X - right.height))){  //up (right) && not top
                 //move up
                 LCD_erase_rectangle(right);
                 right.y++;
@@ -472,7 +472,7 @@ void pong_main(void){
  /*ends the pong game*/
 void end_pong(void){
     LCD_erase_screen();
-    initialize_rectangle(&start_screen,23,40,7*14,20,BLACK);
+    initialize_rectangle(&start_screen,23,40,LCD_CHAR_WIDTH*14,20,BLACK);
     if(score_1 > score_2){
         LCD_write_string("PLAYER 1 WINS!",start_screen.x,start_screen.y,BLACK,14);
     }
@@ -543,12 +543,12 @@ void run_dodge(void){
                 player.x--;
                 LCD_draw_rectangle(player);
             }
-            else if((bit_joy_x < JOY_LOW_THRESHOLD) && player.x <= (127-player.width)){
+            else if((bit_joy_x < JOY_LOW_THRESHOLD) && player.x <= (LCD_MAX_X-player.width)){
                 LCD_erase_rectangle(player);
                 player.x++;
                 LCD_draw_rectangle(player);
             }
-            if((bit_joy_y > JOY_HIGH_THRESHOLD) && player.y <= (127-player.height)){
+            if((bit_joy_y > JOY_HIGH_THRESHOLD) && player.y <= (LCD_MAX_Y-player.height)){
                 LCD_erase_rectangle(player);
                 player.y++;
                 LCD_draw_rectangle(player);
@@ -561,10 +561,10 @@ void run_dodge(void){
 
             //logic for movement of obstacle 1
             LCD_erase_rectangle(obs_1);
-            if((obs_1.x <= 0) || (obs_1.x >= (127 - obs_1.width))){
+            if((obs_1.x <= 0) || (obs_1.x >= (LCD_MAX_X - obs_1.width))){
                 obs_1_x_velocity *= -1;
             }
-            if((obs_1.y <= 11) || (obs_1.y >= (127 - obs_1.height))){
+            if((obs_1.y <= 11) || (obs_1.y >= (LCD_MAX_Y - obs_1.height))){
                 obs_1_y_velocity *= -1;
             }
             obs_1.x += obs_1_x_velocity;
@@ -574,10 +574,10 @@ void run_dodge(void){
             //logic for movement of obstacle 2
             if(obs_2_state == ALIVE){
                 LCD_erase_rectangle(obs_2);
-                if((obs_2.x <= 0) || (obs_2.x >= (127 - obs_2.width))){
+                if((obs_2.x <= 0) || (obs_2.x >= (LCD_MAX_X - obs_2.width))){
                     obs_2_x_velocity *= -1;
                 }
-                if((obs_2.y <= 11) || (obs_2.y >= (127 - obs_2.height))){
+                if((obs_2.y <= 11) || (obs_2.y >= (LCD_MAX_Y - obs_2.height))){
                     obs_2_y_velocity *= -1;
                 }
                 obs_2.x += obs_2_x_velocity;
@@ -592,10 +592,10 @@ void run_dodge(void){
             //logic for movement of obstacle 3
             if(obs_3_state == ALIVE){
                 LCD_erase_rectangle(obs_3);
-                if((obs_3.x <= 0) || (obs_3.x >= (127 - obs_3.width))){
+                if((obs_3.x <= 0) || (obs_3.x >= (LCD_MAX_X - obs_3.width))){
                     obs_3_x_velocity *= -1;
                 }
-                if((obs_3.y <= 11) || (obs_3.y >= (127 - obs_3.height))){
+                if((obs_3.y <= 11) || (obs_3.y >= (LCD_MAX_Y - obs_3.height))){
                     obs_3_y_velocity *= -1;
                 }
                 obs_3.x += obs_3_x_velocity;
@@ -610,10 +610,10 @@ void run_dodge(void){
             //logic for movement of obstacle 4
             if(obs_4_state == ALIVE){
                 LCD_erase_rectangle(obs_4);
-                if((obs_4.x <= 0) || (obs_4.x >= (127 - obs_4.width))){
+                if((obs_4.x <= 0) || (obs_4.x >= (LCD_MAX_X - obs_4.width))){
                     obs_4_x_velocity *= -1;
                 }
-                if((obs_4.y <= 11) || (obs_4.y >= (127 - obs_4.height))){
+                if((obs_4.y <= 11) || (obs_4.y >= (LCD_MAX_Y - obs_4.height))){
                     obs_4_y_velocity *= -1;
                 }
                 obs_4.x += obs_4_x_velocity;

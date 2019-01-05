@@ -6,9 +6,9 @@
  */
 #include "msp.h"
 #include <stdint.h>
-#include "lcd.h"
+#include "msp_boosterpack_lcd/lcd.h"
 #include "adc.h"
-#include "serial.h"
+#include "msp_boosterpack_lcd/serial.h"
 
 #ifndef GAME_H_
 #define GAME_H_

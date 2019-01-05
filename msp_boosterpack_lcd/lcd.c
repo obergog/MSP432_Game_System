@@ -5,7 +5,7 @@
  *      Author: alex
  */
 
-#include <serial.h>
+#include <msp_boosterpack_lcd/serial.h>
 #include "msp.h"
 #include "lcd.h"
 #include <string.h>

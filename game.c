@@ -6,7 +6,7 @@
  */
 #include "msp.h"
 #include "game.h"
-#include "lcd.h"
+#include "msp_boosterpack_lcd/lcd.h"
 
 const GAME game_array[3] = {DEBUG,PONG,DODGE};
 

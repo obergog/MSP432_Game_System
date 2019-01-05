@@ -5,7 +5,7 @@
  *      Author: alex
  */
 
-#include "lcd.h"
+#include "msp_boosterpack_lcd/lcd.h"
 #include <stdint.h>
 
 const uint8_t char_lib_0[70] = { 0, 0, 0, 0, 0, 0, 0,

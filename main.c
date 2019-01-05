@@ -38,11 +38,11 @@
 *
 ******************************************************************************/
 
-#include <serial.h>
+#include "msp_boosterpack_lcd/serial.h"
 #include "msp.h"
 #include "core_cm4.h"
 #include "adc.h"
-#include "lcd.h"
+#include "msp_boosterpack_lcd/lcd.h"
 #include "game.h"
 
 #define ENABLE_SLEEPONEXIT (0x00000002)

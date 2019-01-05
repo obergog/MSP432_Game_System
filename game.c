@@ -139,9 +139,11 @@ void run_game(GAME game){
         break;
     }
 }
-/*functioin that runs the debug app*/
+/*function that runs the debug app*/
 void full_debug(void){
     uint8_t button_toggle = 0;
+    LCD_draw_circle(10, 10, 3, BLACK);
+    LCD_draw_circle(30, 15, 10, RED);
     while(1){
         ADC14->CTL0 |= ADC14_CTL0_SC;       //start ADC conversion
         if(timer_trigger && ~timer_delay){

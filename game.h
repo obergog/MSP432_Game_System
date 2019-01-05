@@ -130,6 +130,8 @@ uint8_t timer_count_string[5];
 void initialize_buttons(void);
 //function to draw the start screen
 void draw_start_screen(void);
+//function to select what game is going to be played
+void select_game(void);
 //function to run game given
 void run_game(GAME game);
 //function to enter debug app

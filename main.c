@@ -38,10 +38,10 @@
 *
 ******************************************************************************/
 
-#include "msp_boosterpack_lcd/serial.h"
 #include "msp.h"
 #include "core_cm4.h"
 #include "adc.h"
+#include "msp_boosterpack_lcd/serial.h"
 #include "msp_boosterpack_lcd/lcd.h"
 #include "game.h"
 

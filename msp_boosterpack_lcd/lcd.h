@@ -12,6 +12,7 @@
 //macros for screen orientation
 #define LCD_MAX_X           127
 #define LCD_MAX_Y           127
+#define LCD_TOTAL_PIXEL     16384
 #define LCD_CHAR_HEIGHT     10
 #define LCD_CHAR_WIDTH      7
 
@@ -52,8 +53,15 @@ typedef struct rectangle{
     uint8_t height, width;
     uint16_t color;
 }RECT;
+//structure that defines the parameters for a circle
+typedef struct circle{
+    uint8_t x, y;
+    uint8_t radius;
+    uint16_t trace_color, fill_color;
+}CIRCLE;
 /*function that initializes rectangle based on given parameters*/
 void initialize_rectangle(RECT * rect, uint8_t x0, uint8_t y0, uint8_t w0, uint8_t h0, uint16_t color_val);
+void initialize_circle(CIRCLE * circ, uint8_t x0, uint8_t y0, uint8_t r0, uint16_t trace_color_val, uint16_t fill_color_val);
 
 /*functions that manipulate the LCD*/
 void initialize_LCD(void);
@@ -67,10 +75,15 @@ void LCD_draw_frame(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
 void LCD_draw_pixel(int16_t x, int16_t y, uint16_t color);
 
 void LCD_draw_hline(uint8_t y0, uint16_t color);
+void LCD_draw_vline(uint8_t y0, uint8_t y1, uint8_t x0, uint16_t color);
 
 //functions that deal with rectangles and the LCD
 void LCD_draw_rectangle(RECT rect);
 void LCD_erase_rectangle(RECT rect);
+
+//function that draws a circle on the LCD
+void LCD_draw_circle(CIRCLE circ);
+void LCD_draw_circle_octants(uint8_t x_center, uint8_t y_center, uint8_t x, uint8_t y, uint16_t color);
 
 //functions to write strings to LCD
 void LCD_write_character(const uint8_t * array, uint8_t x0, uint8_t y0, uint16_t color);

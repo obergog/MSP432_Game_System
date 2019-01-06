@@ -39,17 +39,14 @@ void initialize_buttons(void){
 void draw_start_screen(void){
     LCD_erase_screen();
 
-    initialize_rectangle(&start_screen,START_SCREEN_X,START_SCREEN_Y,START_SCREEN_WIDTH,START_SCREEN_HEIGHT,BLACK);
-    LCD_write_string("PRESS BUTTON",start_screen.x,start_screen.y + LCD_CHAR_HEIGHT,BLACK,12);
-    LCD_write_string("  TO START  ",start_screen.x,start_screen.y,BLACK,12);
+    initialize_rectangle(&start_screen, START_SCREEN_X, START_SCREEN_Y, START_SCREEN_WIDTH, START_SCREEN_HEIGHT, BLACK);
+    LCD_write_string("PRESS BUTTON", start_screen.x, start_screen.y + LCD_CHAR_HEIGHT, BLACK, 12);
+    LCD_write_string("  TO START  ", start_screen.x, start_screen.y, BLACK, 12);
     while(!button_flag);
     start_screen.x -= LCD_CHAR_WIDTH;
     LCD_erase_rectangle(start_screen);
     start_screen.x += LCD_CHAR_WIDTH;
     button_flag = 0;
-
-    //LCD_write_string(" WAIT ", 50,50,BLACK,6);
-    //timer_delay = 30;
 }
 
 //allows the user to select what game they want to play
@@ -142,8 +139,15 @@ void run_game(GAME game){
 /*function that runs the debug app*/
 void full_debug(void){
     uint8_t button_toggle = 0;
-    LCD_draw_circle(10, 10, 3, BLACK);
-    LCD_draw_circle(30, 15, 10, RED);
+    CIRCLE test_circle;
+    initialize_circle(&test_circle, 50, 25, 20, BLACK, RED);
+    LCD_draw_circle(test_circle);
+    /*
+    LCD_draw_vline(70, 5, 45, RED);
+    LCD_draw_vline(30, 5, 45, RED);
+    LCD_draw_hline(5, RED);
+    LCD_draw_hline(45, RED);*/
+
     while(1){
         ADC14->CTL0 |= ADC14_CTL0_SC;       //start ADC conversion
         if(timer_trigger && ~timer_delay){
@@ -209,8 +213,6 @@ void initialize_pong(void){
 
     score_1 = 0;
     score_2 = 0;
-
-    //max_score = 5;
 
     at_left = 0;
     at_right = 0;
@@ -513,19 +515,16 @@ void run_dodge(void){
 
     RECT obs_2;
     initialize_rectangle(&obs_2,DODGE_OBS_2_START_X,DODGE_OBS_2_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
-    //LCD_draw_rectangle(obs_2);
     int8_t obs_2_x_velocity = -1 * obs_speed;
     int8_t obs_2_y_velocity = -1 * obs_speed;
 
     RECT obs_3;
     initialize_rectangle(&obs_3,DODGE_OBS_3_START_X,DODGE_OBS_3_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
-    //LCD_draw_rectangle(obs_3);
     int8_t obs_3_x_velocity = -1 * obs_speed;
     int8_t obs_3_y_velocity = obs_speed;
 
     RECT obs_4;
     initialize_rectangle(&obs_4,DODGE_OBS_4_START_X,DODGE_OBS_4_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
-    //LCD_draw_rectangle(obs_4);
     int8_t obs_4_x_velocity = -1 * obs_speed;
     int8_t obs_4_y_velocity = obs_speed;
 

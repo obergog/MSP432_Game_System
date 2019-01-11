@@ -128,6 +128,12 @@ uint8_t timer_count_string[5];
 
 //function to initialize button interrupts
 void initialize_buttons(void);
+//function to check a rectangle, rectangle collision
+//returns 1 if collision, 0 if no collision
+uint8_t check_rect_collision(RECT rect0, RECT rect1);
+//function to check a circle, rectangle collision
+//returns 1 if collision, 0 if no collision
+uint8_t check_circ_rect_collision(RECT rect, CIRCLE circ);
 //function to draw the start screen
 void draw_start_screen(void);
 //function to select what game is going to be played

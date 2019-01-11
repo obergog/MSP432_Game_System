@@ -652,6 +652,20 @@ void run_dodge(void){
                 obs_4_state = ALIVE;
             }
 
+            //check collisions with obstacles
+            if(check_rect_collision(obs_1, player)){
+                player_state = DEAD;
+            }
+            else if(obs_2_state == ALIVE && check_rect_collision(obs_2, player)){
+                player_state = DEAD;
+            }
+            else if(obs_3_state == ALIVE && check_rect_collision(obs_3, player)){
+                player_state = DEAD;
+            }
+            else if(obs_4_state == ALIVE && check_rect_collision(obs_4, player)){
+                player_state = DEAD;
+            }
+            /*
             //if obstacle 1 collides with player, then player is dead
             if(((obs_1.x + obs_1.width) > player.x) && (obs_1.x < (player.x + player.width)) && ((obs_1.y + obs_1.height) > player.y) && (obs_1.y < (player.y + player.height))){
                 player_state = DEAD;
@@ -666,12 +680,14 @@ void run_dodge(void){
             else if(((obs_3.x + obs_3.width) > player.x) && (obs_3.x < (player.x + player.width)) && ((obs_3.y + obs_3.height) > player.y) && (obs_3.y < (player.y + player.height))){
                 if(obs_3_state == ALIVE){
                     player_state = DEAD;
-                }            }
+                }
+            }
             //if obstacle 4 collides with player and obstacle 4 is in play, then player is dead
             else if(((obs_4.x + obs_4.width) > player.x) && (obs_4.x < (player.x + player.width)) && ((obs_4.y + obs_4.height) > player.y) && (obs_4.y < (player.y + player.height))){
                 if(obs_4_state == ALIVE){
                     player_state = DEAD;
-                }            }
+                }
+            }*/
 
             //if the game goes long enough increase the speed
             if(timer_count == 100){
@@ -705,7 +721,21 @@ void run_dodge(void){
 
     timer_count = 30;
 }
-
+//rectangle collision function
+uint8_t check_rect_collision(RECT rect0, RECT rect1){
+    if(((rect1.x + rect1.width) > rect0.x) && (rect1.x < (rect0.x + rect0.width)) && ((rect1.y + rect1.height) > rect0.y) && (rect1.y < (rect0.y + rect0.height))){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+//rectangle, circle collision function
+uint8_t check_circ_rect_collision(RECT rect, CIRCLE circ){
+    if(((rect.x + rect.width) > (circ.x - circ.radius)) || ((rect.x) < (circ.x + circ.radius))){
+        //if((rect.y + rect.height) > )
+    }
+}
 //bottom button interrupt handler
 void PORT3_IRQHandler(void){
     if(P3->IFG & BIT3){

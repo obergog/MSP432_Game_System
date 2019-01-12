@@ -47,6 +47,7 @@
 //macros for dodge game
 #define DODGE_BOX_HEIGHT        10
 #define DODGE_BOX_WIDTH         10
+#define DODGE_PLAYER_RADIUS     5
 #define DODGE_PLAYER_START_X    60
 #define DODGE_PLAYER_START_Y    60
 #define DODGE_OBS_1_START_X     20
@@ -133,7 +134,7 @@ void initialize_buttons(void);
 uint8_t check_rect_collision(RECT rect0, RECT rect1);
 //function to check a circle, rectangle collision
 //returns 1 if collision, 0 if no collision
-uint8_t check_circ_rect_collision(RECT rect, CIRCLE circ);
+uint8_t check_rect_circ_collision(RECT rect, CIRCLE circ);
 //function to draw the start screen
 void draw_start_screen(void);
 //function to select what game is going to be played

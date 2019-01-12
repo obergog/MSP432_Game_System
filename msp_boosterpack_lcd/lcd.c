@@ -230,6 +230,26 @@ void LCD_draw_circle(CIRCLE circ){
     }
 }
 
+//function that erases given circle
+void LCD_erase_circle(CIRCLE circ){
+    uint8_t x0 = circ.x - circ.radius;
+    uint8_t x1 = circ.x + circ.radius;
+    uint8_t y0 = circ.y - circ.radius;
+    uint8_t y1 = circ.y + circ.radius;
+
+    //draw the frame that represents the circle
+    LCD_draw_frame(x0, y0, x1, y1);
+
+    /*find the total number of pixels in the frame and fill them all
+     * with white*/
+    uint16_t i;
+    uint16_t pixels = (2 * circ.radius + 1) * (2 * circ.radius + 1);
+    LCD_send_command(RAMWR);
+    for(i = 0; i <= pixels; i++){
+        LCD_send_data(0xFF);
+        LCD_send_data(0xFF);
+    }
+}
 //helper function that utilizes symmetry to draw a point in each octant of the circle
 void LCD_draw_circle_octants(uint8_t x_center, uint8_t y_center, uint8_t x, uint8_t y, uint16_t color){
     LCD_draw_pixel(x_center + x, y_center + y, color);

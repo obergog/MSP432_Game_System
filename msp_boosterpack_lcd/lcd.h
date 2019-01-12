@@ -84,6 +84,7 @@ void LCD_erase_rectangle(RECT rect);
 //function that draws a circle on the LCD
 void LCD_draw_circle(CIRCLE circ);
 void LCD_draw_circle_octants(uint8_t x_center, uint8_t y_center, uint8_t x, uint8_t y, uint16_t color);
+void LCD_erase_circle(CIRCLE circ);
 
 //functions to write strings to LCD
 void LCD_write_character(const uint8_t * array, uint8_t x0, uint8_t y0, uint16_t color);

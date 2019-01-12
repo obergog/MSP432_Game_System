@@ -503,9 +503,9 @@ void run_dodge(void){
     DODGE_STATE obs_4_state = DEAD;
 
     //initialize player and obstacle rectangles
-    RECT player;
-    initialize_rectangle(&player,DODGE_PLAYER_START_X,DODGE_PLAYER_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,NAVY);
-    LCD_draw_rectangle(player);
+    CIRCLE player;
+    initialize_circle(&player,DODGE_PLAYER_START_X,DODGE_PLAYER_START_Y,DODGE_PLAYER_RADIUS,NAVY,NAVY);
+    LCD_draw_circle(player);
 
     RECT obs_1;
     initialize_rectangle(&obs_1,DODGE_OBS_1_START_X,DODGE_OBS_1_START_Y,DODGE_BOX_WIDTH,DODGE_BOX_HEIGHT,RED);
@@ -542,24 +542,24 @@ void run_dodge(void){
         if(timer_trigger){
             //logic to move player around
             if((bit_joy_x > JOY_HIGH_THRESHOLD) && (player.x >= 1)){
-                LCD_erase_rectangle(player);
+                LCD_erase_circle(player);
                 player.x--;
-                LCD_draw_rectangle(player);
+                LCD_draw_circle(player);
             }
-            else if((bit_joy_x < JOY_LOW_THRESHOLD) && player.x <= (LCD_MAX_X-player.width)){
-                LCD_erase_rectangle(player);
+            else if((bit_joy_x < JOY_LOW_THRESHOLD) && player.x <= (LCD_MAX_X-player.radius)){
+                LCD_erase_circle(player);
                 player.x++;
-                LCD_draw_rectangle(player);
+                LCD_draw_circle(player);
             }
-            if((bit_joy_y > JOY_HIGH_THRESHOLD) && player.y <= (LCD_MAX_Y-player.height)){
-                LCD_erase_rectangle(player);
+            if((bit_joy_y > JOY_HIGH_THRESHOLD) && player.y <= (LCD_MAX_Y-player.radius)){
+                LCD_erase_circle(player);
                 player.y++;
-                LCD_draw_rectangle(player);
+                LCD_draw_circle(player);
             }
-            else if((bit_joy_y < JOY_LOW_THRESHOLD) && (player.y >= 12)){
-                LCD_erase_rectangle(player);
+            else if((bit_joy_y < JOY_LOW_THRESHOLD) && ((player.y - player.radius) >= 12)){
+                LCD_erase_circle(player);
                 player.y--;
-                LCD_draw_rectangle(player);
+                LCD_draw_circle(player);
             }
 
             //logic for movement of obstacle 1
@@ -653,16 +653,16 @@ void run_dodge(void){
             }
 
             //check collisions with obstacles, if a collision then the player is dead
-            if(check_rect_collision(obs_1, player)){
+            if(check_rect_circ_collision(obs_1, player)){
                 player_state = DEAD;
             }
-            else if(obs_2_state == ALIVE && check_rect_collision(obs_2, player)){
+            else if(obs_2_state == ALIVE && check_rect_circ_collision(obs_2, player)){
                 player_state = DEAD;
             }
-            else if(obs_3_state == ALIVE && check_rect_collision(obs_3, player)){
+            else if(obs_3_state == ALIVE && check_rect_circ_collision(obs_3, player)){
                 player_state = DEAD;
             }
-            else if(obs_4_state == ALIVE && check_rect_collision(obs_4, player)){
+            else if(obs_4_state == ALIVE && check_rect_circ_collision(obs_4, player)){
                 player_state = DEAD;
             }
 
@@ -710,7 +710,7 @@ uint8_t check_rect_collision(RECT rect0, RECT rect1){
 }
 //rectangle, circle collision function
 //returns 1 if collision, 0 otherwise
-uint8_t check_circ_rect_collision(RECT rect, CIRCLE circ){
+uint8_t check_rect_circ_collision(RECT rect, CIRCLE circ){
     if(((circ.x + circ.radius) > rect.x) && ((circ.x - circ.radius) < (rect.x + rect.width)) && ((circ.y + circ.radius) > rect.y) && ((circ.y - circ.radius) < (rect.y + rect.height))){
         return 1;
     }
